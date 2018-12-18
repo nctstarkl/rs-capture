@@ -29,19 +29,38 @@ int main(int argc, char * argv[]) try
 	});
 
 	// Initial population of the device list
+	std::cout << "\n======================================" << std::endl;
+	std::cout << "Initialising devices..." << std::endl;
 	for (auto&& dev : ctx.query_devices()) // Query the list of connected RealSense devices
 	{
 		connected_devices.enable_device(dev);
+		
+		// Print camera information
+		auto dev_name = dev.get_info(rs2_camera_info::RS2_CAMERA_INFO_NAME);
+		auto dev_serial = dev.get_info(rs2_camera_info::RS2_CAMERA_INFO_SERIAL_NUMBER);
+		auto dev_firmware = dev.get_info(rs2_camera_info::RS2_CAMERA_INFO_FIRMWARE_VERSION);
+
+		std::cout << "--------------------------------------" << std::endl;
+		std::cout << "Device name: " << dev_name << std::endl;
+		std::cout << "Serial: " << dev_serial << std::endl;
+		std::cout << "Firmware: " << dev_firmware << std::endl;
+
 	}
 
-	for (auto&& ii = 0; ii < 30; ++ii)
+	std::cout << "\n======================================" << std::endl;
+	const size_t num_frames_to_capture = 30;
+	std::cout << "Capturing " << num_frames_to_capture << " frames...";
+	for (auto&& ii = 0; ii < num_frames_to_capture; ++ii)
 	{
 		connected_devices.try_wait_frames();
 	}
+	std::cout << "complete\n" << std::endl;
 	connected_devices.write_frames_to_disk();
 
 	// Stop streaming
 	connected_devices.stop();
+	std::cout << "\nStreaming stopped" << std::endl;
+
 	return EXIT_SUCCESS;
 }
 catch (const rs2::error & e)
