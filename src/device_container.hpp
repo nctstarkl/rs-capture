@@ -38,12 +38,14 @@ public:
 		rs2::config c;
 		c.enable_stream(rs2_stream::RS2_STREAM_DEPTH, -1, 1280, 720, rs2_format::RS2_FORMAT_Z16, 15);
 		c.enable_stream(rs2_stream::RS2_STREAM_COLOR, -1, 1920, 1080, rs2_format::RS2_FORMAT_RGB8, 15);
+		c.enable_stream(rs2_stream::RS2_STREAM_INFRARED, 1, rs2_format::RS2_FORMAT_Y8, 15);
+		c.enable_stream(rs2_stream::RS2_STREAM_INFRARED, 2, rs2_format::RS2_FORMAT_Y8, 15);
 
 		c.enable_device(serial_number);
 		// Start the pipeline with the configuration
 		rs2::pipeline_profile profile = p.start(c);
 		// Hold it internally
-		_devices.emplace(serial_number, view_port{ {},{},/*{},*/ p, profile });
+		_devices.emplace(serial_number, view_port{ {},{}, p, profile });
 
 	}
 
