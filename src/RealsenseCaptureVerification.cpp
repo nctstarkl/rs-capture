@@ -39,6 +39,9 @@ int main(int argc, char * argv[]) try
 		connected_devices.try_wait_frames();
 	}
 	connected_devices.write_frames_to_disk();
+
+	// Stop streaming
+	connected_devices.stop();
 	return EXIT_SUCCESS;
 }
 catch (const rs2::error & e)

@@ -137,6 +137,15 @@ public:
 		}
 	}
 
+	// Stop all devices
+	void stop()
+	{
+		for (auto&& dev : _devices)
+		{
+			dev.second.pipe.stop();
+		}
+	}
+
 private:
 	std::mutex _mutex;
 	std::map<std::string, view_port> _devices;
